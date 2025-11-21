@@ -34,8 +34,8 @@ def fts_plot(cwvl: float, wvl_range: float, lines: bool=True) -> tuple[np.ndarra
     def find_nearest(array, value) -> int:
         return np.abs(np.nan_to_num(array) - value).argmin()
 
-    atlas_angstrom = read_data('FTSPlotter.atlas', 'FTS1984_296-1300nm_Wavelengths.npy')
-    atlas_spectrum = read_data('FTSPlotter.atlas', 'FTS1984_296-1300nm_Atlas.npy')
+    atlas_angstrom = read_data('ftsplotter.atlas', 'FTS1984_296-1300nm_Wavelengths.npy')
+    atlas_spectrum = read_data('ftsplotter.atlas', 'FTS1984_296-1300nm_Atlas.npy')
 
     idx_lo = find_nearest(atlas_angstrom, cwvl - wvl_range / 2) - 5
     idx_hi = find_nearest(atlas_angstrom, cwvl + wvl_range / 2) + 5
@@ -44,8 +44,8 @@ def fts_plot(cwvl: float, wvl_range: float, lines: bool=True) -> tuple[np.ndarra
     spec = atlas_spectrum[idx_lo:idx_hi]
 
     if lines:
-        line_centers = read_data('FTSPlotter.atlas', 'moore_linecenters.npy')
-        line_names = read_data('FTSPlotter.atlas', 'moore_linenames.npy')
+        line_centers = read_data('ftsplotter.atlas', 'moore_linecenters.npy')
+        line_names = read_data('ftsplotter.atlas', 'moore_linenames.npy')
         line_selection = (line_centers > wave[0]) & (line_centers < wave[-1])
         centers = line_centers[line_selection]
         names = line_names[line_selection]
@@ -117,18 +117,18 @@ def fts_window(wavemin, wavemax, atlas='FTS', norm=True, lines=False):
 
     if atlas.lower() == 'wallace':
         if (wavemax <= 5000.) or (wavemin <= 5000.):
-            atlas_angstroms = read_data('ssosoft.spectral.FTS_atlas', 'Wallace2011_290-1000nm_Wavelengths.npy')
-            atlas_spectrum = read_data('ssosoft.spectral.FTS_atlas', 'Wallace2011_290-1000nm_Observed.npy')
+            atlas_angstroms = read_data('ftsplotter.atlas', 'Wallace2011_290-1000nm_Wavelengths.npy')
+            atlas_spectrum = read_data('ftsplotter.atlas', 'Wallace2011_290-1000nm_Observed.npy')
         else:
-            atlas_angstroms = read_data('ssosoft.spectral.FTS_atlas', 'Wallace2011_500-1000nm_Wavelengths.npy')
-            atlas_spectrum = read_data('ssosoft.spectral.FTS_atlas', 'Wallace2011_500-1000nm_Corrected.npy')
+            atlas_angstroms = read_data('ftsplotter.atlas', 'Wallace2011_500-1000nm_Wavelengths.npy')
+            atlas_spectrum = read_data('ftsplotter.atlas', 'Wallace2011_500-1000nm_Corrected.npy')
     else:
-        atlas_angstroms = read_data('ssosoft.spectral.FTS_atlas', 'FTS1984_296-1300nm_Wavelengths.npy')
+        atlas_angstroms = read_data('ftsplotter.atlas', 'FTS1984_296-1300nm_Wavelengths.npy')
         if norm:
-            atlas_spectrum = read_data('ssosoft.spectral.FTS_atlas', 'FTS1984_296-1300nm_Atlas.npy')
+            atlas_spectrum = read_data('ftsplotter.atlas', 'FTS1984_296-1300nm_Atlas.npy')
         else:
             warnings.warn("Using solar irradiance (i.e., not normalized)")
-            atlas_spectrum = read_data('ssosoft.spectral.FTS_atlas', 'FTS1984_296-1300nm_Irradiance.npy')
+            atlas_spectrum = read_data('ftsplotter.atlas', 'FTS1984_296-1300nm_Irradiance.npy')
             atlas_spectrum *= 462020 # Conversion to erg/cm2/s/nm
             atlas_spectrum /= 10 # Conversion to erg/cm2/s/Angstrom
 
